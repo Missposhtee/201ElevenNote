@@ -6,11 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //e is the individual note entity from the data base.....select is the individual role
-//toarray change teverything to array which satisfies Ienumerable
+//toarray change teverything to array which satisfies Ienumerable....its conects the data to the database
 namespace ElevenNote.Services
 {
      public class NoteService
      {
+        private readonly Guid _userId;
+
+        public NoteService(Guid userId)
+        {
+            _userId = userId;
+        }
         public IEnumerable<NoteListItemModel> GetNotes()
         {
             using (var ctx = new ElevenNoteDbContext())
@@ -18,6 +24,7 @@ namespace ElevenNote.Services
                 return
                   ctx
                       .Notes
+                      .Where(e => e.OwnerId == _userId)
                       .Select(
                           e =>
                               new NoteListItemModel
@@ -30,6 +37,24 @@ namespace ElevenNote.Services
                                 ModifiedUtc =  e.ModifiedUtc
                               })
                                        .ToArray();
+            }
+        }
+
+        public bool CreateNote(NoteCreateModel model)
+        {
+            //This is establishing network connection to the database....
+            using (var ctx = new ElevenNoteDbContext())
+            {
+                var entity =
+                       new NoteEntity
+                       {
+                           OwnerId = _userId,
+                           Title = model.Title,
+                           Content = model.Content,
+                           CreatedUtc = DateTime.UtcNow
+                       };
+                ctx.Notes.Add(entity);
+                return ctx.SaveChanges() ==1;
             }
         }
      }
