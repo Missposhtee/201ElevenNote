@@ -20,17 +20,17 @@ namespace ElevenNote.Data
         }
     }
 
-    public class ElevenNoteDBContext : IdentityDbContext<ElevenNoteUser>
+    public class ElevenNoteDbContext : IdentityDbContext<ElevenNoteUser>
     {
         //line 26 and 27 are our constructor,27 connection strings telling us how to connect to the data base
-        public ElevenNoteDBContext()
+        public ElevenNoteDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 
-        public static ElevenNoteDBContext Create()
+        public static ElevenNoteDbContext Create()
         {
-            return new ElevenNoteDBContext();
+            return new ElevenNoteDbContext();
         }
         //wrapper and collection of notes entity to refer to the note we wrote
         public DbSet<NoteEntity> Notes { get; set; }

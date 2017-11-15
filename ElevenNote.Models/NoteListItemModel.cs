@@ -10,24 +10,14 @@ namespace ElevenNote.Models
     
     public class NoteListItemModel
     {
-        public NoteListItemModel(
-            int noteId,
-            string title,
-            DateTime createdUtc,
-            DateTime? modifiedUtc)
-        {
-            NoteId = noteId;
-            Title = title;
-            CreatedUtc = createdUtc;
-            ModifiedUtc = modifiedUtc;
-        }
+
         //setting it to get means readonly mode
-        public int NoteId { get; }
+        public int NoteId { get; set; }
 
-        public string Title { get; }
+        public string Title { get; set; }
 
-        public DateTime CreatedUtc { get; }
+        public DateTime CreatedUtc { get; set; }
 
-        public DateTime? ModifiedUtc { get; }
+        public DateTime? ModifiedUtc { get; set; }
     }
 }

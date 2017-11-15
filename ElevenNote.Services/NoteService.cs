@@ -1,10 +1,12 @@
-﻿using ElevenNote.Models;
+﻿using ElevenNote.Data;
+using ElevenNote.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//e is the individual note entity from the data base.....select is the individual role
+//toarray change teverything to array which satisfies Ienumerable
 namespace ElevenNote.Services
 {
      public class NoteService
@@ -13,7 +15,21 @@ namespace ElevenNote.Services
         {
             using (var ctx = new ElevenNoteDbContext())
             {
+                return
+                  ctx
+                      .Notes
+                      .Select(
+                          e =>
+                              new NoteListItemModel
+                              {
 
+
+                               NoteId = e.NoteId,
+                                Title = e.Title,
+                                CreatedUtc = e.CreatedUtc,
+                                ModifiedUtc =  e.ModifiedUtc
+                              })
+                                       .ToArray();
             }
         }
      }
