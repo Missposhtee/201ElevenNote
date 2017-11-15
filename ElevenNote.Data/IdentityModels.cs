@@ -32,6 +32,8 @@ namespace ElevenNote.Data
         {
             return new ElevenNoteDBContext();
         }
+        //wrapper and collection of notes entity to refer to the note we wrote
+        public DbSet<NoteEntity> Notes { get; set; }
 
         //newly added from daves slack(2) overide of the onModelCreating context;makes sure tables are created in singular formed and mathches
 
