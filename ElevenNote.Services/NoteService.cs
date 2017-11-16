@@ -33,6 +33,7 @@ namespace ElevenNote.Services
 
                                NoteId = e.NoteId,
                                 Title = e.Title,
+                                IsStared = e .IsStarred,
                                 CreatedUtc = e.CreatedUtc,
                                 ModifiedUtc =  e.ModifiedUtc
                               })

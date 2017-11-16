@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -24,14 +25,17 @@ namespace ElevenNote.Data
         //data that we need to represent a note within the system/data base
          public Guid OwnerId { get; set; }
         [Required]
-
+        
         //title of the note
         public string Title { get; set; }
         [MaxLength(500)]
 
         //what goes into the note (body of the note)
         public string Content { get; set; }
-        [Required]
+       
+
+        [DefaultValue(false)]
+        public bool IsStarred { get; set; }
 
         //creation date (always store ur date in utc)incase the user changes time zone
         public DateTime CreatedUtc { get; set; }
