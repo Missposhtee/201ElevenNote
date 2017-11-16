@@ -38,5 +38,7 @@ namespace ElevenNote.Data
 
         //when it was last modified;thequestionmark means wrapping a datetime in another type that allows null
         public DateTime? ModifiedUtc { get; set; }
+
+        
     }
 }
