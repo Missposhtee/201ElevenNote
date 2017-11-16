@@ -9,19 +9,24 @@ using System.Web.Mvc;
 
 namespace ElevenNote.Web.Controllers
 {
+
     //to make the log in pple access to it alone(it automatically allows those that are auntheticated alone)
     [Authorize]
     public class NotesController : Controller
     {
-        // GET: Notes
-        public ActionResult Index()
+        private NoteService CreateNoteService()
         {
             //creating an instance of our noteservice
             var userId = Guid.Parse(User.Identity.GetUserId());
             var svc = new NoteService(userId);
 
+            return svc;
+        }
+        // GET: Notes
+        public ActionResult Index()
+        {
             //creating an empty collection so we could view the page
-            var model = svc . GetNotes();
+            var model = CreateNoteService().GetNotes();
             return View(model);
         }
 
@@ -36,9 +41,7 @@ namespace ElevenNote.Web.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            var svc = new NoteService(userId);
-            if (!svc.CreateNote(model))
+            if (!CreateNoteService().CreateNote(model))
             {
                 ModelState.AddModelError("", "Unable to create note");
                 return View(model);
@@ -48,9 +51,7 @@ namespace ElevenNote.Web.Controllers
         }
        public ActionResult Details(int id)
             {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            var svc = new NoteService(userId);
-            var model = svc.GetNoteById(id);
+            var model = CreateNoteService().GetNoteById(id);
             return View(model);
             }
         

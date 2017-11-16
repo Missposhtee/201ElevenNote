@@ -63,10 +63,8 @@ namespace ElevenNote.Services
             NoteEntity entity;
             using (var ctx = new ElevenNoteDbContext())
             {
-                entity =
-                ctx
-                    .Notes
-                    .SingleOrDefault(e => e.NoteId == id && e.OwnerId == _userId);
+                entity = GetNoteFromDataBase(ctx, id);
+                
             }
 
             if (entity == null) return new NoteDetailModel();
@@ -81,5 +79,52 @@ namespace ElevenNote.Services
                     ModifiedUtc = entity.ModifiedUtc,
                 };
         }
+
+        public bool UpdateNote(NoteEditModel model)
+        {
+            
+            using (var ctx = new ElevenNoteDbContext())
+            {
+                //get it from the data base
+                var entity = GetNoteFromDataBase(ctx, model.NoteId);
+                    ctx
+                       .Notes
+                       .SingleOrDefault(e => e.NoteId == model.NoteId && e.OwnerId == _userId);
+                //return the value
+                if (entity == null) return false;
+
+                entity.Title = model.Title;
+                entity.Content = model.Content;
+                entity.ModifiedUtc = DateTime.UtcNow;
+                //save changes
+                return ctx.SaveChanges() == 1;
+            }
+        }
+
+        private NoteEntity GetNoteFromDataBase(ElevenNoteDbContext context, int  noteId)
+        {
+            return
+                      context
+                       .Notes
+                         .SingleOrDefault(e => e.NoteId == noteId && e.OwnerId == _userId);
+                      
+        }
+
+       
+
+
+        public bool DeleteNote(int noteId)
+        {
+            using (var ctx = new ElevenNoteDbContext())
+            {
+                var entity = GetNoteFromDataBase(ctx, noteId);
+                    
+                if (entity == null) return false;
+                ctx.Notes.Remove(entity);
+                return ctx.SaveChanges() == 1;
+
+            }
+        }
      }
+
 }
